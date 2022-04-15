@@ -1,0 +1,29 @@
+# Informações sobre o cluster.
+kubectl cluster-info
+
+# Informações referente aos nodes dentro do cluster.
+kubectl get-nodes
+
+# Log de inicialização em tempo real
+tail -f -n 300 /var/log/cloud-init-output.log
+
+# Exemplo de mensagem final ao criar o master
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.15.236:6443 --token bubh98.nlx6fvmpmvhsthqu \
+        --discovery-token-ca-cert-hash sha256:ca06ece3da0c57f00be5dfe46c515a28b8cc8625b635f61d80082e285ce7700d
+
+###############################

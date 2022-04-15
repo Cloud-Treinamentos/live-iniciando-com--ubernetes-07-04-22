@@ -1,0 +1,33 @@
+# Passo-a-passo
+1. Criar a instância (Ubuntu 20.04) master na AWS com 2CPU e 4RAM (Utilizar o userdata-master.sh)
+
+2. Ao finalizar a instalação dos pré-requisitos rode os comandos abaixo com um usuário comum de forma sequencial.
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+4. Agora é hora de fazermos o deploy da nossa parte de rede do Kubernetes, para isto acesse o link abaixo:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+5. Dentro deste usaremos o Flannel que é o mais usado, abra a pagina do Flannel e copie o comando para implanta-lo e execute.
+  kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+6. Agora verifique se todos os containers do Control Plane estão em execução, para isto execute o comando abaixo:
+  kubectl get pods --all-namespaces
+
+7. Criar uma segunda instância (Ubuntu 20.04) que será o node com 2CPU e 4RAM (utilizar o userdata-agent.sh)
+
+8. Na master copie do log do sistema o comando para adicionar novos workers, vá até o agente e execute este comando como root.
+
+9. Agora na master execute o comando abaixo para verificar se a maquina entrou com sucesso.
+  kubectl get nodes
+
+### Feito isso vamos agora manipular o nosso cluster de forma externa.
+
+10. Agora vamos instalar o kubectl na minha maquina.
+  https://kubernetes.io/docs/tasks/tools/
+
+11. Dentro da maquina Master, com o usuário padrão, copie o arquivo ~/.kube/config para dentro da sua maquina na pasta ~/.kube/config 
+
+
+ssh -L 3336:db001.host:3306 user@pub001.host
